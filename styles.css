@@ -67,14 +67,14 @@ body {
     gap: 0.5rem;
 }
 
-.nav-links a:hover {
-    background: rgba(255,255,255,0.1);
+.nav-links a.active {
+    background: rgba(255,255,255,0.2);
     border-radius: 4px;
 }
 
-/* Hero区域 */
-.hero {
-    height: 60vh;
+/* 首页 */
+.hero-section {
+    height: 70vh;
     background: linear-gradient(135deg, rgba(52,152,219,0.9), rgba(155,89,182,0.9)),
                 url('data:image/svg+xml,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%232c3e50"/></svg>');
     background-size: cover;
@@ -83,7 +83,6 @@ body {
     justify-content: center;
     text-align: center;
     color: white;
-    margin-bottom: 4rem;
 }
 
 .hero-content {
@@ -93,24 +92,39 @@ body {
 
 .typewriter {
     font-size: 3.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
     border-right: 3px solid white;
     white-space: nowrap;
     overflow: hidden;
     animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
-@keyframes typing {
-    from { width: 0 }
-    to { width: 100% }
+.stats {
+    background: rgba(255,255,255,0.1);
+    padding: 1.5rem;
+    border-radius: 8px;
+    display: inline-block;
 }
 
-@keyframes blink-caret {
-    from, to { border-color: transparent }
-    50% { border-color: white }
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.2rem;
 }
 
-/* 文章卡片 */
+/* 文章列表 */
+.articles-section {
+    padding: 4rem 0;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
 .article-card {
     background: var(--card-background-color);
     border-radius: 12px;
@@ -118,16 +132,7 @@ body {
     margin-bottom: 2rem;
     box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     transition: transform 0.3s, box-shadow 0.3s;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 0.6s forwards;
-}
-
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    cursor: pointer;
 }
 
 .article-card:hover {
@@ -135,46 +140,31 @@ body {
     box-shadow: 0 12px 25px rgba(0,0,0,0.15);
 }
 
-.article-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
+/* 文章详情 */
+.article-detail {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: none;
 }
 
-.category-tag {
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    background: var(--secondary-color);
     color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 2rem;
 }
 
-.tutorial { background: #e74c3c; }
-.frontend { background: #2ecc71; }
-
-.article-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1.5rem;
-}
-
-.read-time {
-    color: #95a5a6;
-    font-size: 0.9rem;
-}
-
-/* 新增关于区块样式 */
+/* 关于页面 */
 .about-section {
-    background: var(--background-color);
     padding: 4rem 0;
-}
-
-.about-card {
-    background: var(--card-background-color);
-    border-radius: 12px;
-    padding: 2rem;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    background: var(--background-color);
 }
 
 .about-content {
@@ -185,18 +175,19 @@ body {
 }
 
 .avatar {
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-.bio {
-    flex: 1;
+.bio h3 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
 }
 
 .skills {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
@@ -210,7 +201,7 @@ body {
     font-size: 0.9rem;
 }
 
-/* 新增联系表单样式 */
+/* 联系页面 */
 .contact-section {
     padding: 4rem 0;
     background: linear-gradient(135deg, rgba(52,152,219,0.05), rgba(155,89,182,0.05));
@@ -225,67 +216,28 @@ body {
     box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
-.contact-form {
-    margin-top: 2rem;
+.contact-info {
+    display: grid;
+    gap: 1.5rem;
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 0.8rem;
-    border: 2px solid #eee;
-    border-radius: 6px;
-    font-size: 1rem;
-    transition: border-color 0.3s;
-}
-
-input:focus, textarea:focus {
-    outline: none;
-    border-color: var(--secondary-color);
-}
-
-.submit-btn {
-    background: var(--secondary-color);
-    color: white;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.3s;
-}
-
-.submit-btn:hover {
-    background: var(--hover-color);
-}
-
-/* 滚动偏移补偿 */
-html {
-    scroll-padding-top: 80px;
-}
-
-/* 页脚 */
-footer {
-    background: var(--primary-color);
-    color: white;
-    text-align: center;
-    padding: 3rem 2rem;
-    margin-top: 5rem;
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.1rem;
 }
 
 .social-links {
+    margin-top: 2rem;
     display: flex;
-    justify-content: center;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    justify-content: center;
 }
 
 .social-links a {
-    color: white;
-    font-size: 1.5rem;
+    color: var(--primary-color);
+    font-size: 2rem;
     transition: transform 0.3s;
 }
 
@@ -295,32 +247,35 @@ footer {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-    .nav-container {
-        padding: 0 1rem;
-    }
-
     .nav-links {
         gap: 1rem;
     }
 
     .typewriter {
         font-size: 2rem;
-        animation: none;
-        border-right: none;
-        white-space: normal;
     }
 
-    .article-card {
-        padding: 1.5rem;
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .avatar {
+        width: 150px;
+        height: 150px;
     }
 }
 
-@media (max-width: 480px) {
-    .nav-links {
-        display: none;
-    }
-    
-    .hero {
-        height: 50vh;
-    }
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: white }
+}
+
+html {
+    scroll-padding-top: 80px;
 }
