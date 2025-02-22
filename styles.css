@@ -238,13 +238,34 @@ body {
 .social-links a {
     color: var(--primary-color);
     font-size: 2rem;
-    transition: transform 0.3s;
+    transition: transform 0.3s, color 0.3s;
+    position: relative;
 }
 
 .social-links a:hover {
     transform: translateY(-3px);
+    color: var(--secondary-color);
 }
 
+.social-links a::after {
+    content: attr(title);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.social-links a:hover::after {
+    opacity: 1;
+}
 /* 响应式设计 */
 @media (max-width: 768px) {
     .nav-links {
