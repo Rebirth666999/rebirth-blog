@@ -1,25 +1,14 @@
-// 访问计数器
 document.addEventListener('DOMContentLoaded', () => {
-    // 访问计数
+    // 访问计数器
     let visitCount = localStorage.getItem('visitCount') || 0;
     visitCount++;
     localStorage.setItem('visitCount', visitCount);
     document.getElementById('visitCount').textContent = visitCount;
 
-    // 滚动动画
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.animation = 'fadeIn 0.6s forwards';
-            }
-        });
-    }, { threshold: 0.1 });
+    // 加载文章列表
+    loadArticles();
 
-    document.querySelectorAll('.article-card').forEach(card => {
-        observer.observe(card);
-    });
-
-    // 增强版平滑滚动
+    // 平滑滚动
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -27,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = document.querySelector(targetId);
             
             if (target) {
-                // 计算偏移量（导航栏高度 + 20px间距）
                 const offset = document.querySelector('.navbar').offsetHeight + 20;
                 const targetPosition = target.offsetTop - offset;
                 
@@ -36,13 +24,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     behavior: 'smooth'
                 });
 
-                // 更新URL哈希（无页面跳转）
                 history.pushState(null, null, targetId);
             }
         });
     });
 
-    // 监听滚动高亮当前章节
+    // 滚动高亮导航
     window.addEventListener('scroll', () => {
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('.nav-links a');
@@ -63,4 +50,74 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+});
+
+async function loadArticles() {
+    try {
+        const container = document.getElementById('articlesContainer');
+        const response = await fetch('data/articles.json');
+        const articles = await response.json();
+        
+        container.innerHTML = articles.map(article => `
+            <div class="article-card" data-article="${article.id}">
+                <div class="article-meta">
+                    <span class="category-tag ${article.category === '教程' ? 'tutorial' : 'frontend'}">${article.category}</span>
+                    <span class="article-date">${article.date}</span>
+                </div>
+                <h2 class="article-title">${article.title}</h2>
+                <p>${article.summary}</p>
+                <div class="article-footer">
+                    <span class="read-time">${article.readTime}分钟阅读</span>
+                </div>
+            </div>
+        `).join('');
+
+        document.querySelectorAll('.article-card').forEach(card => {
+            card.addEventListener('click', () => showArticle(card.dataset.article));
+        });
+    } catch (error) {
+        console.error('加载文章失败:', error);
+    }
+}
+
+async function showArticle(articleId) {
+    try {
+        const container = document.getElementById('articleDetail');
+        const list = document.getElementById('articlesContainer');
+        
+        list.style.display = 'none';
+        container.style.display = 'block';
+        container.innerHTML = '<div class="loader"></div>';
+
+        const response = await fetch(`articles/${articleId}.html`);
+        if (!response.ok) throw new Error('文章加载失败');
+        const content = await response.text();
+
+        container.innerHTML = `
+            <button class="back-button" onclick="showArticleList()">
+                <i class="fas fa-arrow-left"></i> 返回列表
+            </button>
+            <div class="article-content">
+                ${content}
+            </div>
+        `;
+
+        history.pushState({ article: articleId }, '', `#${articleId}`);
+    } catch (error) {
+        container.innerHTML = `<div class="error-message">${error.message}</div>`;
+    }
+}
+
+function showArticleList() {
+    document.getElementById('articleDetail').style.display = 'none';
+    document.getElementById('articlesContainer').style.display = 'block';
+    history.replaceState(null, '', window.location.pathname);
+}
+
+window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.article) {
+        showArticle(event.state.article);
+    } else {
+        showArticleList();
+    }
 });
