@@ -266,6 +266,18 @@ body {
 .social-links a:hover::after {
     opacity: 1;
 }
+
+.custom-icon {
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    transition: transform 0.3s;
+}
+
+.custom-icon:hover {
+    transform: translateY(-3px);
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
     .nav-links {
