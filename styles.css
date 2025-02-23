@@ -195,6 +195,17 @@ body {
     margin-bottom: 2rem;
 }
 
+/* 分类标签样式 */
+.category-tag {
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: white;
+}
+
+.announcement { background: #e67e22; }  /* 公告 - 橙色 */
+.welcome      { background: #27ae60; }  /* 欢迎 - 绿色 */
+
 /* 关于页面 */
 .about-section {
     padding: 2rem 1rem; /* 调整内边距 */
