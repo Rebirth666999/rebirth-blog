@@ -71,7 +71,7 @@ async function loadArticles() {
         container.innerHTML = articles.map(article => `
             <div class="article-card" data-article="${article.id}">
                 <div class="article-meta">
-                    <span class="category-tag ${article.category === '教程' ? 'tutorial' : 'frontend'}">${article.category}</span>
+                    <span class="category-tag ${getCategoryClass(article.category)}">${article.category}</span>
                     <span class="article-date">${article.date}</span>
                 </div>
                 <h2 class="article-title">${article.title}</h2>
@@ -97,6 +97,22 @@ async function loadArticles() {
         `;
     } finally {
         container.classList.remove('loading'); // 隐藏加载状态
+    }
+}
+
+/**
+ * 获取文章分类的CSS类
+ * @param {string} category - 文章类别
+ * @returns {string} - 分类的CSS类名
+ */
+function getCategoryClass(category) {
+    switch (category) {
+        case '公告':
+            return 'announcement';
+        case '欢迎':
+            return 'welcome';
+        default:
+            return 'default-category'; // 添加一个默认的类别
     }
 }
 
