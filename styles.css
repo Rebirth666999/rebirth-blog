@@ -40,6 +40,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; /* 允许换行 */
 }
 
 .logo {
@@ -54,7 +55,8 @@ body {
 
 .nav-links {
     display: flex;
-    gap: 2rem;
+    gap: 1rem; /* 减少间距 */
+    flex-wrap: wrap; /* 允许换行 */
 }
 
 .nav-links a {
@@ -65,11 +67,31 @@ body {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 1rem; /* 调整字体大小 */
 }
 
 .nav-links a.active {
     background: rgba(255,255,255,0.2);
     border-radius: 4px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column; /* 垂直排列 */
+        align-items: flex-start; /* 左对齐 */
+    }
+
+    .nav-links {
+        flex-direction: column; /* 垂直排列 */
+        gap: 0.5rem; /* 减少间距 */
+        width: 100%; /* 占满宽度 */
+    }
+
+    .nav-links a {
+        padding: 0.5rem 0; /* 调整内边距 */
+        font-size: 1.1rem; /* 增大字体大小 */
+    }
 }
 
 /* 首页 */
@@ -94,10 +116,10 @@ body {
 .typewriter {
     font-size: 3.5rem; /* 默认字体大小 */
     margin-bottom: 2rem;
-    white-space: nowrap; /* 强制不换行 */
     overflow: hidden; /* 隐藏溢出内容 */
-    text-overflow: ellipsis; /* 溢出时显示省略号 */
     animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    white-space: normal; /* 允许换行 */
+    word-wrap: break-word; /* 允许单词换行 */
 }
 
 .stats {
@@ -164,20 +186,20 @@ body {
 
 /* 关于页面 */
 .about-section {
-    padding: 4rem 0;
-    background: var(--background-color);
+    padding: 2rem 1rem; /* 调整内边距 */
 }
 
 .about-content {
     display: flex;
-    gap: 2rem;
+    flex-direction: column; /* 垂直排列 */
+    gap: 1.5rem; /* 减少间距 */
     align-items: center;
-    margin-top: 2rem;
+    margin-top: 1rem; /* 调整上边距 */
 }
 
 .avatar {
-    width: 200px;
-    height: 200px;
+    width: 150px; /* 调整头像大小 */
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -185,13 +207,15 @@ body {
 .bio h3 {
     margin-bottom: 1rem;
     color: var(--primary-color);
+    text-align: center; /* 居中对齐 */
 }
 
 .skills {
-    margin-top: 2rem;
+    margin-top: 1.5rem; /* 调整上边距 */
     display: flex;
-    gap: 1rem;
+    gap: 0.8rem; /* 减少间距 */
     flex-wrap: wrap;
+    justify-content: center; /* 居中对齐 */
 }
 
 .skill-tag {
@@ -204,41 +228,40 @@ body {
 
 /* 联系页面 */
 .contact-section {
-    padding: 4rem 0;
-    background: linear-gradient(135deg, rgba(52,152,219,0.05), rgba(155,89,182,0.05));
+    padding: 2rem 1rem; /* 调整内边距 */
 }
 
 .contact-card {
     background: var(--card-background-color);
-    max-width: 600px;
+    max-width: 100%; /* 占满宽度 */
     margin: 0 auto;
-    padding: 2rem;
+    padding: 1.5rem; /* 调整内边距 */
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
 .contact-info {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem; /* 减少间距 */
 }
 
 .info-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-size: 1.1rem;
+    gap: 0.8rem; /* 减少间距 */
+    font-size: 1rem; /* 调整字体大小 */
 }
 
 .social-links {
-    margin-top: 2rem;
+    margin-top: 1.5rem; /* 调整上边距 */
     display: flex;
-    gap: 1.5rem;
+    gap: 1rem; /* 减少间距 */
     justify-content: center;
 }
 
 .social-links a {
     color: var(--primary-color);
-    font-size: 2rem;
+    font-size: 1.8rem; /* 调整图标大小 */
     transition: transform 0.3s, color 0.3s;
 }
 
@@ -249,22 +272,8 @@ body {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-    .nav-links {
-        gap: 1rem;
-    }
-
     .typewriter {
         font-size: 2.5rem; /* 小屏幕字体大小 */
-    }
-
-    .about-content {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .avatar {
-        width: 150px;
-        height: 150px;
     }
 }
 
