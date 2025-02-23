@@ -125,7 +125,12 @@ body {
     display: inline-block;
     overflow: hidden;
     white-space: nowrap; /* 每行强制不换行 */
-    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+    width: 0; /* 初始宽度为0 */
+    animation: typing 3.5s steps(40, end) forwards; /* 打字机效果 */
+}
+
+.typewriter-line:nth-child(2) {
+    animation-delay: 3.5s; /* 第二行延迟显示 */
 }
 
 .stats {
