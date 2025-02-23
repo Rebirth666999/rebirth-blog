@@ -117,9 +117,15 @@ body {
     font-size: 3.5rem; /* 默认字体大小 */
     margin-bottom: 2rem;
     overflow: hidden; /* 隐藏溢出内容 */
-    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
     white-space: normal; /* 允许换行 */
     word-wrap: break-word; /* 允许单词换行 */
+}
+
+.typewriter-line {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap; /* 每行强制不换行 */
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
 }
 
 .stats {
