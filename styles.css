@@ -203,8 +203,6 @@ body {
     color: white;
 }
 
-.announcement { background: #e67e22; }  /* 公告 - 橙色 */
-.welcome      { background: #27ae60; }  /* 欢迎 - 绿色 */
 
 /* 关于页面 */
 .about-section {
