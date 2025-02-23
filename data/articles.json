@@ -1,9 +1,9 @@
 [
     {
-        "id": "hello-world",
-        "title": "Hello World：我的第一篇技术文章",
+        "id": "hello",
+        "title": "Hello：我的第一篇技术文章",
         "date": "2024年2月25日",
-        "category": "教程",
+        "category": "欢迎",
         "readTime": 3,
         "summary": "欢迎来到我的技术博客！这是我在这个平台发布的第一篇文章，介绍了写技术博客的好处和未来计划..."
     }
