@@ -5,7 +5,1207 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rebirth的博客 | 个人技术分享</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #9b59b6;
+            --text-color: #34495e;
+            --background-color: #f8f9fa;
+            --card-background-color: #ffffff;
+            --gradient-start: #3498db;
+            --gradient-end: #9b59b6;
+            --font-family: 'Segoe UI', system-ui, sans-serif;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --transition: all 0.3s ease;
+            --success-color: #27ae60;
+            --warning-color: #e67e22;
+            --error-color: #e74c3c;
+        }
+
+        .dark-mode {
+            --primary-color: #e0e0e0;
+            --secondary-color: #64b5f6;
+            --accent-color: #ba68c8;
+            --text-color: #e0e0e0;
+            --background-color: #121212;
+            --card-background-color: #1e1e1e;
+            --gradient-start: #1a237e;
+            --gradient-end: #4a148c;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            line-height: 1.6;
+            color: var(--text-color);
+            background: var(--background-color);
+            transition: var(--transition);
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            padding: 1rem 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo .highlight {
+            color: #f1c40f;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        .nav-links a.active {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(15deg);
+        }
+
+        .admin-link {
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            padding: 0.5rem 1rem;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .admin-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .nav-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+                width: 100%;
+            }
+
+            .nav-links a {
+                padding: 0.8rem 0;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* 首页 */
+        .hero-section {
+            height: 80vh;
+            background: linear-gradient(135deg, rgba(52,152,219,0.9), rgba(155,89,182,0.9));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.1) 0%, transparent 15%),
+                radial-gradient(circle at 90% 80%, rgba(255,255,255,0.1) 0%, transparent 15%);
+            z-index: 0;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .typewriter {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+            font-weight: 700;
+            overflow: hidden;
+            white-space: normal;
+        }
+
+        .typewriter-line {
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 0;
+            animation: typing 3.5s steps(40, end) forwards;
+        }
+
+        .typewriter-line:nth-child(2) {
+            animation-delay: 3.5s;
+        }
+
+        .stats {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.2rem;
+        }
+
+        /* 文章列表 */
+        .articles-section {
+            padding: 4rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            margin: 0.8rem auto;
+            border-radius: 2px;
+        }
+
+        .articles-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            background: var(--card-background-color);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            box-shadow: var(--shadow);
+            width: 300px;
+            max-width: 100%;
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 0.5rem;
+            outline: none;
+            color: var(--text-color);
+        }
+
+        .search-box button {
+            background: transparent;
+            border: none;
+            color: var(--secondary-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .category-filter, .tags-filter {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn, .tag-btn {
+            background: var(--card-background-color);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-color);
+            box-shadow: var(--shadow);
+        }
+
+        .category-btn.active, .category-btn:hover,
+        .tag-btn.active, .tag-btn:hover {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            color: white;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .article-card {
+            background: var(--card-background-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+        }
+
+        .article-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .article-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .category-tag {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .announcement { background: #e67e22; }
+        .welcome { background: #27ae60; }
+        .technology { background: #3498db; }
+        .tutorial { background: #9b59b6; }
+
+        .article-date {
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .article-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .article-summary {
+            margin-bottom: 1.5rem;
+            flex: 1;
+            color: var(--text-color);
+        }
+
+        .article-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .read-more {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .read-more:hover {
+            color: var(--accent-color);
+            gap: 0.8rem;
+        }
+
+        .read-time {
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        /* 文章详情 */
+        .article-detail {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+            background: var(--card-background-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-top: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .article-header .category-tag {
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .article-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .article-meta-detail {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #95a5a6;
+            font-size: 0.95rem;
+        }
+
+        .article-content-detail {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .article-content-detail p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content-detail img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+
+        .back-to-articles {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            margin-top: 2rem;
+            font-weight: 500;
+        }
+
+        .back-to-articles:hover {
+            color: var(--accent-color);
+        }
+
+        /* 评论区 */
+        .comments-section {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .comment-form {
+            background: var(--card-background-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: var(--card-background-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .comment-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        #commentsContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .comment {
+            background: var(--card-background-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .comment:hover {
+            transform: translateY(-5px);
+        }
+
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .comment-date {
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        .comment-content {
+            line-height: 1.6;
+        }
+
+        /* 关于页面 */
+        .about-section {
+            padding: 4rem 0;
+            background: var(--background-color);
+        }
+
+        .about-card {
+            background: var(--card-background-color);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 5rem;
+        }
+
+        .about-content {
+            flex: 2;
+            padding: 3rem;
+            min-width: 300px;
+        }
+
+        .about-content h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .about-content p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .skills {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .skill-tag {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            box-shadow: var(--shadow);
+        }
+
+        /* 联系页面 */
+        .contact-section {
+            padding: 4rem 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .contact-card {
+            background: var(--card-background-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-card h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .contact-info {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .info-item i {
+            width: 40px;
+            height: 40px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--secondary-color);
+        }
+
+        .social-links {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(155, 89, 182, 0.1);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px);
+            color: var(--accent-color);
+            background: rgba(155, 89, 182, 0.2);
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: var(--card-background-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            transition: var(--transition);
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .contact-form textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* 页脚 */
+        footer {
+            background: var(--card-background-color);
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .copyright {
+            color: #95a5a6;
+            font-size: 0.9rem;
+        }
+
+        /* 动画效果 */
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .typewriter {
+                font-size: 2.5rem;
+            }
+            
+            .stats {
+                gap: 1rem;
+                padding: 1rem;
+            }
+            
+            .about-card {
+                flex-direction: column;
+            }
+            
+            .about-image {
+                min-height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .typewriter {
+                font-size: 2rem;
+            }
+            
+            .stat-item {
+                font-size: 1rem;
+            }
+            
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        html {
+            scroll-padding-top: 80px;
+            scroll-behavior: smooth;
+        }
+
+        /* 管理面板样式 */
+        .admin-panel {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .admin-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .admin-btn {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .admin-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .admin-btn.delete {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+
+        .admin-btn.edit {
+            background: linear-gradient(to right, #f39c12, #e67e22);
+        }
+
+        .admin-btn.category {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            background: var(--card-background-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .admin-table th {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .admin-table tr:hover td {
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        /* 表单样式 */
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-background-color);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: var(--card-background-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--card-background-color);
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            padding: 2rem;
+            position: relative;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #95a5a6;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .modal-btn.cancel {
+            background: var(--card-background-color);
+            border: 1px solid #ddd;
+            color: var(--text-color);
+        }
+
+        .modal-btn.confirm {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+        }
+
+        /* 加载中效果 */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(52, 152, 219, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--secondary-color);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 通知提示 */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 3000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .notification.success {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+        }
+
+        .notification.error {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 回到顶部按钮 */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 骨架屏效果 */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-title {
+            height: 1.5rem;
+            width: 70%;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        .skeleton-text {
+            height: 1rem;
+            width: 100%;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+        }
+
+        .skeleton-text:last-child {
+            width: 80%;
+        }
+
+        .skeleton-image {
+            height: 200px;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+
+        .skeleton-meta {
+            height: 1rem;
+            width: 30%;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+        }
+
+        /* 新增：验证页面样式 */
+        .loading-container {
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #3498db;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -67,16 +1267,75 @@
                 </div>
                 
                 <div class="category-filter" id="categoryFilter">
-                    <!-- 分类将通过JS动态加载 -->
+                    <button class="category-btn active">全部</button>
+                    <button class="category-btn">技术</button>
+                    <button class="category-btn">教程</button>
+                    <button class="category-btn">生活</button>
                 </div>
             </div>
 
             <div class="tags-filter fade-in" id="tagsFilter">
-                <!-- 标签将通过JS动态加载 -->
+                <button class="tag-btn">Java</button>
+                <button class="tag-btn">Python</button>
+                <button class="tag-btn">Vue.js</button>
+                <button class="tag-btn">Spring Boot</button>
             </div>
             
             <div class="articles-grid" id="articlesContainer">
                 <!-- 文章将通过JS动态加载 -->
+                <div class="article-card">
+                    <div class="article-image">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="category-tag technology">技术</span>
+                            <span class="article-date">2024-03-15</span>
+                        </div>
+                        <h3 class="article-title">Spring Boot 3.0新特性详解</h3>
+                        <p class="article-summary">探索Spring Boot 3.0中的新功能和改进，包括对Java 17的支持、GraalVM原生镜像编译等。</p>
+                        <div class="article-footer">
+                            <a href="#" class="read-more">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                            <span class="read-time">8 min read</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="article-card">
+                    <div class="article-image">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="category-tag tutorial">教程</span>
+                            <span class="article-date">2024-03-10</span>
+                        </div>
+                        <h3 class="article-title">Vue 3组合式API实战指南</h3>
+                        <p class="article-summary">学习如何使用Vue 3的组合式API构建复杂的前端应用，提高代码复用性和可维护性。</p>
+                        <div class="article-footer">
+                            <a href="#" class="read-more">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                            <span class="read-time">10 min read</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="article-card">
+                    <div class="article-image">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <span class="category-tag technology">技术</span>
+                            <span class="article-date">2024-03-05</span>
+                        </div>
+                        <h3 class="article-title">MySQL性能优化策略</h3>
+                        <p class="article-summary">深入探讨MySQL数据库的性能优化技巧，包括索引优化、查询优化和服务器配置调整。</p>
+                        <div class="article-footer">
+                            <a href="#" class="read-more">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                            <span class="read-time">12 min read</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -183,6 +1442,61 @@
     <section id="article-detail" class="container" style="display: none;">
         <div class="article-detail" id="articleDetail">
             <!-- 文章内容将通过JS动态加载 -->
+            <div class="article-header">
+                <span class="category-tag technology">技术</span>
+                <h1>Spring Boot 3.0新特性详解</h1>
+                <div class="article-meta-detail">
+                    <span><i class="far fa-calendar"></i> 2024-03-15</span>
+                    <span><i class="far fa-clock"></i> 8分钟阅读</span>
+                    <span><i class="fas fa-tags"></i> Java, Spring Boot</span>
+                </div>
+            </div>
+            
+            <div class="article-content-detail">
+                <p>Spring Boot 3.0是Spring生态中的一个重要版本，带来了许多令人兴奋的新特性和改进。本文将深入探讨这些新功能，帮助你更好地理解和应用它们。</p>
+                
+                <h2>Java 17支持</h2>
+                <p>Spring Boot 3.0要求最低Java版本为17，这使开发人员能够利用Java 17中的新特性，如文本块、记录类(Records)和模式匹配等。</p>
+                
+                <h2>GraalVM原生镜像支持</h2>
+                <p>Spring Boot 3.0提供了对GraalVM原生镜像的全面支持，这可以显著减少应用程序的内存占用和启动时间：</p>
+                
+                <pre><code>@SpringBootApplication
+public class MyApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}</code></pre>
+                
+                <p>使用GraalVM编译原生镜像后，应用启动时间从几秒减少到毫秒级别，内存占用也大幅降低。</p>
+                
+                <h2>改进的依赖管理</h2>
+                <p>Spring Boot 3.0引入了更智能的依赖管理机制，能够自动检测和解决依赖冲突，减少了配置的复杂性。</p>
+                
+                <h2>全新的安全架构</h2>
+                <p>Spring Security 6.0与Spring Boot 3.0集成，提供了更简单、更强大的安全配置选项：</p>
+                
+                <pre><code>@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/public/**").permitAll()
+            .anyRequest().authenticated()
+        )
+        .formLogin(form -> form
+            .loginPage("/login")
+            .permitAll()
+        );
+    return http.build();
+}</code></pre>
+                
+                <p>这个新的配置方式更加简洁明了，易于理解和维护。</p>
+            </div>
+            
+            <a href="#articles" class="back-to-articles">
+                <i class="fas fa-arrow-left"></i> 返回文章列表
+            </a>
         </div>
 
         <!-- 评论区 -->
@@ -200,7 +1514,25 @@
                 </button>
             </div>
             <div id="commentsContainer">
-                <!-- 评论将通过JS动态加载 -->
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">开发者小王</span>
+                        <span class="comment-date">2024-03-16</span>
+                    </div>
+                    <div class="comment-content">
+                        <p>非常详细的介绍！GraalVM原生镜像支持确实是一个重大改进，我们正在考虑在生产环境中使用。</p>
+                    </div>
+                </div>
+                
+                <div class="comment">
+                    <div class="comment-header">
+                        <span class="comment-author">Java爱好者</span>
+                        <span class="comment-date">2024-03-15</span>
+                    </div>
+                    <div class="comment-content">
+                        <p>感谢分享！对Java 17的支持是我最期待的功能，记录类让代码更简洁了。</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -208,88 +1540,98 @@
     <!-- 管理面板 -->
     <section id="admin" class="container" style="display: none;">
         <div class="admin-panel" id="adminPanel">
-            <!-- 管理内容将通过JS动态加载 -->
+            <div class="admin-header">
+                <h2 class="admin-title">博客管理面板</h2>
+                <div class="admin-actions">
+                    <button class="admin-btn"><i class="fas fa-plus"></i> 添加文章</button>
+                    <button class="admin-btn category"><i class="fas fa-tag"></i> 管理分类</button>
+                    <button class="admin-btn"><i class="fas fa-sign-out-alt"></i> 退出</button>
+                </div>
+            </div>
+            
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>分类</th>
+                        <th>日期</th>
+                        <th>阅读量</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Spring Boot 3.0新特性详解</td>
+                        <td><span class="category-tag technology">技术</span></td>
+                        <td>2024-03-15</td>
+                        <td>1,245</td>
+                        <td>
+                            <button class="admin-btn edit">编辑</button>
+                            <button class="admin-btn delete">删除</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Vue 3组合式API实战指南</td>
+                        <td><span class="category-tag tutorial">教程</span></td>
+                        <td>2024-03-10</td>
+                        <td>987</td>
+                        <td>
+                            <button class="admin-btn edit">编辑</button>
+                            <button class="admin-btn delete">删除</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>MySQL性能优化策略</td>
+                        <td><span class="category-tag technology">技术</span></td>
+                        <td>2024-03-05</td>
+                        <td>1,532</td>
+                        <td>
+                            <button class="admin-btn edit">编辑</button>
+                            <button class="admin-btn delete">删除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="form-container">
+                <h2>添加新文章</h2>
+                <form>
+                    <div class="form-group">
+                        <label for="articleTitle">标题</label>
+                        <input type="text" id="articleTitle" placeholder="文章标题" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleCategory">分类</label>
+                        <select id="articleCategory" required>
+                            <option value="">选择分类</option>
+                            <option value="technology">技术</option>
+                            <option value="tutorial">教程</option>
+                            <option value="life">生活</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleTags">标签（用逗号分隔）</label>
+                        <input type="text" id="articleTags" placeholder="例如：java,spring">
+                    </div>
+                    <div class="form-group">
+                        <label for="articleSummary">摘要</label>
+                        <textarea id="articleSummary" required placeholder="文章摘要"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleContent">内容（支持Markdown）</label>
+                        <textarea id="articleContent" required placeholder="文章内容"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="articleReadTime">阅读时间（分钟）</label>
+                        <input type="number" id="articleReadTime" min="1" value="5" required>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-save"></i> 保存文章
+                    </button>
+                </form>
+            </div>
         </div>
     </section>
-
-    <!-- 分类管理模态框 -->
-    <div class="modal" id="categoryModal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeCategoryModal">&times;</span>
-            <h2 class="modal-title" id="categoryModalTitle">添加分类</h2>
-            <form id="categoryForm" class="modal-form">
-                <input type="hidden" id="categoryId">
-                <div class="form-group">
-                    <label for="categoryName">分类名称</label>
-                    <input type="text" id="categoryName" required placeholder="例如：技术">
-                </div>
-                <div class="form-group">
-                    <label for="categorySlug">标识（英文/数字）</label>
-                    <input type="text" id="categorySlug" required placeholder="例如：technology">
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-save"></i> 保存分类
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 管理员登录模态框 -->
-    <div class="modal" id="loginModal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeLoginModal">&times;</span>
-            <h2 class="modal-title">管理员登录</h2>
-            <form id="loginForm" class="modal-form">
-                <div class="form-group">
-                    <label for="adminPassword">密码</label>
-                    <input type="password" id="adminPassword" required placeholder="请输入管理员密码">
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-sign-in-alt"></i> 登录
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- 文章编辑模态框 -->
-    <div class="modal" id="articleModal">
-        <div class="modal-content">
-            <span class="close-modal" id="closeArticleModal">&times;</span>
-            <h2 class="modal-title" id="articleModalTitle">添加新文章</h2>
-            <form id="articleForm" class="modal-form">
-                <input type="hidden" id="articleId">
-                <div class="form-group">
-                    <label for="articleTitle">标题</label>
-                    <input type="text" id="articleTitle" required placeholder="文章标题">
-                </div>
-                <div class="form-group">
-                    <label for="articleCategory">分类</label>
-                    <select id="articleCategory" required>
-                        <!-- 分类将通过JS动态加载 -->
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="articleTags">标签（用逗号分隔）</label>
-                    <input type="text" id="articleTags" placeholder="例如：java,spring">
-                </div>
-                <div class="form-group">
-                    <label for="articleSummary">摘要</label>
-                    <textarea id="articleSummary" required placeholder="文章摘要"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="articleContent">内容（支持Markdown）</label>
-                    <textarea id="articleContent" required placeholder="文章内容"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="articleReadTime">阅读时间（分钟）</label>
-                    <input type="number" id="articleReadTime" min="1" value="5" required>
-                </div>
-                <button type="submit" class="submit-btn">">
-                    <i class="fas fa-save"></i> 保存文章
-                </button>
-            </form>
-        </div>
-    </div>
 
     <footer>
         <div class="footer-content">
@@ -306,9 +1648,129 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/admin.js"></script>
-    <script src="js/comments.js"></script>
+    <script>
+        // 主应用程序逻辑
+        document.addEventListener('DOMContentLoaded', () => {
+            // 初始化主题切换
+            const themeToggle = document.getElementById('themeToggle');
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                const icon = themeToggle.querySelector('i');
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.classList.replace('fa-moon', 'fa-sun');
+                } else {
+                    icon.classList.replace('fa-sun', 'fa-moon');
+                }
+            });
+            
+            // 初始化访问统计
+            let visitCount = localStorage.getItem('visitCount') || 0;
+            visitCount++;
+            localStorage.setItem('visitCount', visitCount);
+            document.getElementById('visitCount').textContent = visitCount;
+            
+            // 今日访问计数
+            const today = new Date().toISOString().split('T')[0];
+            let dailyCount = localStorage.getItem('dailyCount') || 0;
+            const lastVisitDate = localStorage.getItem('lastVisitDate');
+            
+            if (lastVisitDate !== today) {
+                dailyCount = 1;
+                localStorage.setItem('lastVisitDate', today);
+            } else {
+                dailyCount++;
+            }
+            
+            localStorage.setItem('dailyCount', dailyCount);
+            document.getElementById('dailyCount').textContent = dailyCount;
+            
+            // 模拟在线用户（实际应用中应由服务器计算）
+            document.getElementById('onlineCount').textContent = Math.floor(Math.random() * 10) + 1;
+            
+            // 文章详情页导航
+            const urlParams = new URLSearchParams(window.location.search);
+            const articleId = urlParams.get('id');
+            
+            if (articleId) {
+                document.getElementById('article-detail').style.display = 'block';
+                document.querySelectorAll('section:not(#article-detail)').forEach(section => {
+                    section.style.display = 'none';
+                });
+            }
+            
+            // 管理面板导航
+            const adminPanel = document.getElementById('admin');
+            const adminLink = document.getElementById('adminLink');
+            
+            adminLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                adminPanel.style.display = 'block';
+                document.querySelectorAll('section:not(#admin)').forEach(section => {
+                    section.style.display = 'none';
+                });
+                window.scrollTo(0, 0);
+            });
+            
+            // 返回文章列表
+            document.querySelector('.back-to-articles')?.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('article-detail').style.display = 'none';
+                document.querySelectorAll('section').forEach(section => {
+                    section.style.display = 'block';
+                });
+                window.history.pushState({}, '', window.location.pathname);
+            });
+            
+            // 表单提交处理
+            document.querySelectorAll('form').forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    // 显示成功通知
+                    const notification = document.createElement('div');
+                    notification.className = 'notification success show';
+                    notification.textContent = '操作成功！';
+                    document.body.appendChild(notification);
+                    
+                    // 3秒后移除通知
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => notification.remove(), 300);
+                    }, 3000);
+                    
+                    // 如果是联系表单则重置
+                    if (form.classList.contains('contact-form')) {
+                        form.reset();
+                    }
+                });
+            });
+            
+            // 回到顶部按钮
+            const backToTopBtn = document.createElement('div');
+            backToTopBtn.className = 'back-to-top';
+            backToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            document.body.appendChild(backToTopBtn);
+            
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+            
+            // 分类和标签过滤
+            document.querySelectorAll('.category-btn, .tag-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    btn.classList.toggle('active');
+                    // 这里应实现实际过滤逻辑
+                });
+            });
+        });
+    </script>
 </body>
 </html>
