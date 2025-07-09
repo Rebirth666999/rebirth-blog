@@ -1,141 +1,159 @@
-// 评论系统
-export function initComments(articleId) {
-    // 加载现有评论
-    loadComments(articleId);
-    
-    // 初始化评论表单提交
-    const commentForm = document.getElementById('commentForm');
-    
-    if (commentForm) {
-        commentForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const name = document.getElementById('commentName').value.trim();
-            const email = document.getElementById('commentEmail').value.trim();
-            const content = document.getElementById('commentContent').value.trim();
-            
-            if (!name || !email || !content) {
-                showNotification('请填写所有必填字段', 'error');
-                return;
-            }
-            
-            try {
-                // 显示加载中
-                const submitBtn = document.getElementById('submitComment');
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> 提交中...';
-                
-                // 添加新评论
-                const newComment = await addComment({
-                    articleId,
-                    author: name,
-                    content
-                });
-                
-                // 添加新评论到列表
-                addCommentToUI(newComment);
-                
-                // 重置表单
-                commentForm.reset();
-                
-                // 显示成功通知
-                showNotification('评论提交成功', 'success');
-            } catch (error) {
-                console.error('提交评论失败:', error);
-                showNotification('提交评论失败，请稍后再试', 'error');
-            } finally {
-                // 恢复按钮状态
-                const submitBtn = document.getElementById('submitComment');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> 提交评论';
-            }
+// comment.js - 评论功能
+// 初始化评论系统
+function initComments() {
+  const commentForm = document.getElementById('comment-form');
+  if (commentForm) {
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const commentText = document.getElementById('comment-text').value;
+      if (!commentText.trim()) return;
+      
+      // 检查用户是否已登录
+      if (!checkAuth()) {
+        showToast('请先登录再发表评论', 'info');
+        return;
+      }
+      
+      try {
+        showToast('提交评论中...', 'loading');
+        
+        // 提交评论到后端
+        const response = await fetch('/api/comments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({
+            articleId: getArticleIdFromUrl(),
+            content: commentText
+          })
         });
-    }
-}
-
-// 加载评论
-async function loadComments(articleId) {
-    try {
-        // 显示加载中
-        const commentsContainer = document.getElementById('commentsContainer');
-        commentsContainer.innerHTML = `
-            <div class="text-center py-6">
-                <div class="loading-spinner mx-auto"></div>
-            </div>
-        `;
         
-        // 获取评论数据
-        const comments = await fetchComments(articleId);
-        
-        // 渲染评论列表
-        if (comments && comments.length > 0) {
-            commentsContainer.innerHTML = '';
-            comments.forEach(comment => {
-                addCommentToUI(comment);
-            });
-        } else {
-            commentsContainer.innerHTML = `
-                <div class="text-center py-6 text-gray-500">
-                    暂无评论，快来发表你的看法吧！
-                </div>
-            `;
+        if (!response.ok) {
+          throw new Error(`提交评论失败: ${response.status}`);
         }
-    } catch (error) {
-        console.error('加载评论失败:', error);
-        document.getElementById('commentsContainer').innerHTML = `
-            <div class="text-center py-6 text-red-500">
-                加载评论失败，请稍后再试
-            </div>
-        `;
-    }
+        
+        // 清空评论框
+        document.getElementById('comment-text').value = '';
+        
+        // 重新加载评论
+        await loadComments();
+        
+        showToast('评论提交成功！', 'success');
+      } catch (error) {
+        console.error('提交评论时出错:', error);
+        showToast('提交评论失败', 'error');
+      }
+    });
+  }
+  
+  // 加载文章评论
+  loadComments();
 }
 
-// 添加评论到UI
-function addCommentToUI(comment) {
-    const commentsContainer = document.getElementById('commentsContainer');
+// 从URL获取文章ID
+function getArticleIdFromUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('id');
+}
+
+// 加载文章评论
+async function loadComments() {
+  try {
+    const commentsContainer = document.getElementById('comments-container');
+    if (!commentsContainer) return;
     
-    const commentElement = document.createElement('div');
-    commentElement.className = 'comment fade-in';
+    const articleId = getArticleIdFromUrl();
+    if (!articleId) return;
     
-    commentElement.innerHTML = `
-        <div class="comment-header">
-            <div class="comment-author">${comment.author}</div>
-            <div class="comment-date">${comment.date}</div>
-        </div>
-        <div class="comment-content">
-            ${comment.content}
-        </div>
+    showToast('加载评论中...', 'loading');
+    
+    // 从后端获取评论
+    const response = await fetch(`/api/comments?articleId=${articleId}`);
+    
+    if (!response.ok) {
+      throw new Error(`加载评论失败: ${response.status}`);
+    }
+    
+    const comments = await response.json();
+    
+    // 渲染评论
+    renderComments(comments);
+  } catch (error) {
+    console.error('加载评论时出错:', error);
+    showToast('加载评论失败', 'error');
+  }
+}
+
+// 渲染评论
+function renderComments(comments) {
+  const commentsContainer = document.getElementById('comments-container');
+  if (!commentsContainer) return;
+  
+  if (comments.length === 0) {
+    commentsContainer.innerHTML = `
+      <div class="empty-comments">
+        <p>暂无评论</p>
+      </div>
     `;
+  } else {
+    let html = '<div class="comments-list">';
     
-    // 添加到容器顶部
-    if (commentsContainer.firstChild) {
-        commentsContainer.insertBefore(commentElement, commentsContainer.firstChild);
+    comments.forEach(comment => {
+      html += `
+        <div class="comment">
+          <div class="comment-header">
+            <img src="${comment.user.avatar_url}" alt="${comment.user.login}" class="comment-avatar">
+            <div class="comment-user-info">
+              <h4 class="comment-author">${comment.user.login}</h4>
+              <p class="comment-date">${formatDate(comment.date)}</p>
+            </div>
+          </div>
+          <div class="comment-content">
+            ${marked.parse(comment.content)}
+          </div>
+        </div>
+      `;
+    });
+    
+    html += '</div>';
+    
+    // 添加评论表单
+    if (localStorage.getItem('token')) {
+      html += `
+        <div class="comment-form-container">
+          <h3>发表评论</h3>
+          <form id="comment-form">
+            <textarea id="comment-text" rows="4" placeholder="写下你的评论..."></textarea>
+            <button type="submit">提交评论</button>
+          </form>
+        </div>
+      `;
     } else {
-        commentsContainer.appendChild(commentElement);
+      html += `
+        <div class="login-to-comment">
+          <p>请 <a href="#" onclick="login()">登录</a> 后发表评论</p>
+        </div>
+      `;
     }
+    
+    commentsContainer.innerHTML = html;
+  }
 }
 
-// 显示通知
-function showNotification(message, type = 'success') {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    // 显示通知
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
-    
-    // 3秒后隐藏通知
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
-    }, 3000);
+// 格式化日期
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 }
 
-// 从API模块导入必要的函数
-import { fetchComments, addComment } from './api.js';
+// 在页面加载时初始化评论
+document.addEventListener('DOMContentLoaded', () => {
+  initComments();
+});
