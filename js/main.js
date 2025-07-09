@@ -33,7 +33,7 @@ async function loadArticlesList() {
     
     // 从 GitHub Gist 获取文章列表
     // 注意：这里需要一个包含文章元数据的 Gist ID
-    const articlesGistId = 'YOUR_ARTICLES_METADATA_GIST_ID';
+    const articlesGistId = '9c6cdb8456fa096c0cc9b17991468438';
     const response = await fetch(`https://api.github.com/gists/${articlesGistId}`);
     
     if (!response.ok) {
